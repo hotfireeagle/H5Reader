@@ -14,6 +14,7 @@
 				color: #fff;
 				text-decoration: none;
 			}
+			button{outline: 0 none #000;}
 			html,body{
 				width: 100%;
 				color: #555;
@@ -71,7 +72,6 @@
 			}
 			.back_container{
 				width: 100%;
-				height: 57px;
 				background-color: #000;
 				color: #d5d5d6;
 				position: fixed;
@@ -125,6 +125,7 @@
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
+				box-shadow: 0 0 0 1px;
 			}
 			.bottom_container .item span{
 				font-size: 1.5rem;
@@ -243,6 +244,12 @@
 			.round25{
 				background-color: #283548;
 			}
+			.click-container{
+				width: 100%;
+				height: 60%;
+				position: fixed;
+				top: 20%;
+			}
 		</style>
 	</head>
 	<body>
@@ -269,20 +276,20 @@
 
 		<!-- 脱离文档流的部分 -->
 		<!-- 开始返回菜单的制作 -->
-		<div class="back_container">
+		<div class="back_container" id="back_container" style="display:none">
 			<a href="#">返回书架</a>
 		</div>
 		<!-- 返回菜单的制作结束 -->
 
 		<!-- 开始制作底部菜单栏 -->
-		<div class="bottom_container">
+		<div class="bottom_container" id="bottom_container" style="display:none">
 			<div class="container">
 				<div class="item item1">
 					<span>目录</span>
 				</div>
 			</div>
 			<div class="container">
-				<div class="item item2">
+				<div class="item item2" id="font_click">
 					<span>字体</span>
 				</div>
 			</div>
@@ -295,7 +302,7 @@
 		<!-- 底部菜单栏制作完毕 -->
 
 		<!-- 开始制作二级底部菜单栏 -->
-		<div class="bottom2-container">
+		<div class="bottom2-container" id="bottom2_container" style="display:none">
 			<ul>
 				<li>
 					<div class="item2-container">
@@ -326,28 +333,93 @@
 				</li>
 			</ul>
 		</div>
+		<!-- 二级底部菜单栏制作结束 -->
 
-		<script src="lib/zepto.min.js"></script>
-		<script>
-			window.jQuery = $;
-		</script>
-		<script src="js/jquery.base64.js"></script>
-		<script src="js/jquery.jsonp.js"></script>
+		<!-- 制作一个遮罩，目的用来承受点击事件，点击以唤醒上下菜单 -->
+		<div class="click-container" id="click_container">
 
+		</div>
+		<!-- 完毕 -->
 		<script>
 			(function(){
+				//工具对象
 				var Util = (function(){
-					var computeHeader = function(){
+					/*
+					**computeHeader用来计算标题栏的高度，使得遮罩的高度与他相同
+					*/
+					var computeHeader = function compute(){
 						var Header = document.getElementsByClassName("header")[0];
 						//利用offsetHeight获得元素被撑开时的高度
 						var height = Header.offsetHeight;
 						return height;	
 					}
+
+					/*
+					**{ele} -> DOMElement
+					**创建show方法，它的作用是使得参数所代表的DOM元素被显示出来
+					*/
+					var show = function sh(ele){
+						//我们需要把原有被隐藏的元素的display属性设置为他原有的值
+						if(ele && Object.prototype.toString.call(ele) !== "[object Array]"){
+							ele.style.display = "block";
+						}else if(ele && Object.prototype.toString.call(ele) === "[object Array]"){
+							for(const element of ele){
+								element.style.display = "block";
+							}
+						}
+					}
+
+					/*
+					**${ele} -> DOMElement
+					**创建hidden方法，它的作用就是使得参数所代表的DOM元素被隐藏起来
+					*/
+					var hidden = function hide(ele){
+						if(ele && Object.prototype.toString.call(ele) !== "[object Array]"){
+							ele.style.display = "none";
+						}else if(ele && Object.prototype.toString.call(ele) === "[object Array]"){
+							for(const element of ele){
+								element.style.display = "none";
+							}
+						}
+					}
+
 					return {
-						computeHeader
+						computeHeader,
+						show,
+						hidden
 					};
 				})();
-				console.log("a", Util);
+				
+				var DOM = {
+					"click_container" : document.getElementById("click_container"),
+					"back_container": document.getElementById("back_container"),
+					"bottom_container": document.getElementById("bottom_container"),
+					"font_click": document.getElementById("font_click"),
+					"bottom2_container": document.getElementById("bottom2_container")
+				}
+				
+				DOM.click_container.addEventListener("click", () => {
+					if(DOM.back_container.style.display === "none"){
+						Util.show([DOM.back_container, DOM.bottom_container]);
+					}else{
+						Util.hidden([DOM.back_container, DOM.bottom_container]);
+					}
+				});
+
+				//给字体这个box块增添事件
+				DOM.font_click.addEventListener("click", () => {
+					if(DOM.bottom2_container.style.display === "none"){
+						Util.show(DOM.bottom2_container);
+					}else{
+						Util.hidden(DOM.bottom2_container);
+					}
+				});
+
+				//由于标题的高度是随机变化的，所以我们不能够实现设置好遮罩的高度
+				//因此我们可以通过js计算出标题的高度，接着在应用与遮罩
+				window.addEventListener("load", () => {
+					DOM.back_container.style.height = Util.computeHeader() + "px";
+				})
 			})();
 		</script>
 	</body>
