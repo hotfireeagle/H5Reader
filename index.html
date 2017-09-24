@@ -125,7 +125,6 @@
 				top: 50%;
 				left: 50%;
 				transform: translate(-50%, -50%);
-				box-shadow: 0 0 0 1px;
 			}
 			.bottom_container .item span{
 				font-size: 1.5rem;
@@ -398,7 +397,17 @@
 					"bottom2_container": document.getElementById("bottom2_container")
 				}
 				
+				/*
 				DOM.click_container.addEventListener("click", () => {
+					if(DOM.back_container.style.display === "none"){
+						Util.show([DOM.back_container, DOM.bottom_container]);
+					}else{
+						Util.hidden([DOM.back_container, DOM.bottom_container]);
+					}
+				});
+				*/
+
+				DOM.click_container.addEventListener("touchstart", () => {
 					if(DOM.back_container.style.display === "none"){
 						Util.show([DOM.back_container, DOM.bottom_container]);
 					}else{
@@ -407,7 +416,17 @@
 				});
 
 				//给字体这个box块增添事件
+				/*
 				DOM.font_click.addEventListener("click", () => {
+					if(DOM.bottom2_container.style.display === "none"){
+						Util.show(DOM.bottom2_container);
+					}else{
+						Util.hidden(DOM.bottom2_container);
+					}
+				});
+				*/
+
+				DOM.font_click.addEventListener("touchstart", () => {
 					if(DOM.bottom2_container.style.display === "none"){
 						Util.show(DOM.bottom2_container);
 					}else{
