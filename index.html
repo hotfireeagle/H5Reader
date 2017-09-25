@@ -358,20 +358,29 @@
 					**创建show方法，它的作用是使得参数所代表的DOM元素被显示出来
 					*/
 					var show = function sh(ele){
+						ele.style.display = "block";
+					}
+					/*
+					var show = function sh(ele){
 						//我们需要把原有被隐藏的元素的display属性设置为他原有的值
 						if(ele && Object.prototype.toString.call(ele) !== "[object Array]"){
 							ele.style.display = "block";
 						}else if(ele && Object.prototype.toString.call(ele) === "[object Array]"){
 							for(const element of ele){
+								alert("for..of")
 								element.style.display = "block";
 							}
 						}
 					}
-
+					*/
 					/*
 					**${ele} -> DOMElement
 					**创建hidden方法，它的作用就是使得参数所代表的DOM元素被隐藏起来
 					*/
+					var hidden = function hide(ele){
+						ele.style.display = "none";
+					}
+					/*
 					var hidden = function hide(ele){
 						if(ele && Object.prototype.toString.call(ele) !== "[object Array]"){
 							ele.style.display = "none";
@@ -381,6 +390,7 @@
 							}
 						}
 					}
+					*/
 
 					return {
 						computeHeader,
@@ -397,16 +407,22 @@
 					"bottom2_container": document.getElementById("bottom2_container")
 				}
 				
-				/*
+				
 				DOM.click_container.addEventListener("click", () => {
+					alert("click")
 					if(DOM.back_container.style.display === "none"){
-						Util.show([DOM.back_container, DOM.bottom_container]);
+						//Util.show([DOM.back_container, DOM.bottom_container]);
+						Util.show(DOM.back_container);
+						Util.show(DOM.bottom_container);
 					}else{
-						Util.hidden([DOM.back_container, DOM.bottom_container]);
+						//Util.hidden([DOM.back_container, DOM.bottom_container, DOM.bottom2_container]);
+						Util.show(DOM.back_container);
+						Util.show(DOM.bottom_container);
+						Util.show(DOM.bottom2_container);
 					}
 				});
-				*/
-
+				
+				/*
 				DOM.click_container.addEventListener("touchstart", () => {
 					if(DOM.back_container.style.display === "none"){
 						Util.show([DOM.back_container, DOM.bottom_container]);
@@ -414,9 +430,10 @@
 						Util.hidden([DOM.back_container, DOM.bottom_container, DOM.bottom2_container]);
 					}
 				});
+				*/
 
 				//给字体这个box块增添事件
-				/*
+				
 				DOM.font_click.addEventListener("click", () => {
 					if(DOM.bottom2_container.style.display === "none"){
 						Util.show(DOM.bottom2_container);
@@ -424,8 +441,8 @@
 						Util.hidden(DOM.bottom2_container);
 					}
 				});
-				*/
-
+				
+				/*
 				DOM.font_click.addEventListener("touchstart", () => {
 					if(DOM.bottom2_container.style.display === "none"){
 						Util.show(DOM.bottom2_container);
@@ -433,6 +450,7 @@
 						Util.hidden(DOM.bottom2_container);
 					}
 				});
+				*/
 
 				//由于标题的高度是随机变化的，所以我们不能够实现设置好遮罩的高度
 				//因此我们可以通过js计算出标题的高度，接着在应用与遮罩
