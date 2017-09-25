@@ -408,7 +408,7 @@
 				}
 				
 				
-				DOM.click_container.addEventListener("click", () => {
+				DOM.click_container.addEventListener("click", function(){
 					alert("click")
 					if(DOM.back_container.style.display === "none"){
 						//Util.show([DOM.back_container, DOM.bottom_container]);
@@ -416,9 +416,9 @@
 						Util.show(DOM.bottom_container);
 					}else{
 						//Util.hidden([DOM.back_container, DOM.bottom_container, DOM.bottom2_container]);
-						Util.show(DOM.back_container);
-						Util.show(DOM.bottom_container);
-						Util.show(DOM.bottom2_container);
+						Util.hidden(DOM.back_container);
+						Util.hidden(DOM.bottom_container);
+						Util.hidden(DOM.bottom2_container);
 					}
 				});
 				
@@ -434,7 +434,7 @@
 
 				//给字体这个box块增添事件
 				
-				DOM.font_click.addEventListener("click", () => {
+				DOM.font_click.addEventListener("click", function(){
 					if(DOM.bottom2_container.style.display === "none"){
 						Util.show(DOM.bottom2_container);
 					}else{
